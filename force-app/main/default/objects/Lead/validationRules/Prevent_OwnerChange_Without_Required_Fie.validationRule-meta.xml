@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_OwnerChange_Without_Required_Fie</fullName>
+    <active>true</active>
+    <description>Prevent owner changes unless Country, Lead Source, and Number of Employees are filled in, except for System Administrator and Contract Manager profiles</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(OwnerId),
+  OR(
+    AND(
+      NOT(
+        OR(
+          $Profile.Name = &quot;System Administrator&quot;,
+          $Profile.Name = &quot;Contract Manager&quot;
+        )
+      ),
+      OR(
+        ISBLANK(Country),
+        ISPICKVAL(LeadSource, &quot;&quot;),
+        ISBLANK(NumberOfEmployees)
+      )
+    ),
+    AND(
+      $Profile.Name = &quot;Contract Manager&quot;,
+      OR(
+        ISBLANK(Country),
+        ISPICKVAL(LeadSource, &quot;&quot;)
+      )
+    ),
+    AND(
+      $Profile.Name = &quot;System Administrator&quot;,
+      ISPICKVAL(LeadSource, &quot;&quot;)
+    )
+  )
+)</errorConditionFormula>
+    <errorMessage>&quot;You cannot change the Owner unless Country, Lead Source, and Number of Employees are filled in. Note: Number of Employees is not required for Contract Manager and Country is not required for System Administrator.&quot;</errorMessage>
+</ValidationRule>
