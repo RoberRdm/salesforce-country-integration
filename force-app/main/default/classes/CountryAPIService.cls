@@ -1,6 +1,7 @@
 // Servicio que hace el callout
 public with sharing class CountryAPIService {
     // Inner class to hold country data returned by the API
+    //HOLA NUEVO CAMBIO
     public class CountryData {
         public String name;
         public String alpha2Code;
